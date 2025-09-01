@@ -1,0 +1,50 @@
+import pkg from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import { NotAuthError } from "./errors.js";
+
+const { sign, verify } = pkg;
+const { compare } = bcrypt;
+
+const KEY = "supersecret";
+
+const createJSONToken = (email) => {
+  return sign({ email }, KEY, { expiresIn: "1h" });
+}
+
+const validateJSONToken = (token) => {
+  return verify(token, KEY);
+}
+
+const isValidPassword = (password, storedPassword) => {
+  return compare(password, storedPassword);
+}
+
+const checkAuthMiddleware = (req, res, next) => {
+  if (req.method === "OPTIONS") {
+    return next();
+  }
+  if (!req.headers.authorization) {
+    console.log("NOT AUTH. AUTH HEADER MISSING.");
+    return next(new NotAuthError("Not authenticated."));
+  }
+
+  const authFragments = req.headers.authorization.split(" ");
+
+  if (authFragments.length !== 2) {
+    console.log("NOT AUTH. AUTH HEADER INVALID.");
+    return next(new NotAuthError("Not authenticated."));
+  }
+
+  const authToken = authFragments[1];
+  try {
+    const validatedToken = validateJSONToken(authToken);
+    req.user = validatedToken;
+  } catch (error) {
+    console.log("NOT AUTH. TOKEN INVALID.");
+    return next(new NotAuthError("Not authenticated."));
+  }
+
+  next();
+}
+
+export { createJSONToken, validateJSONToken, isValidPassword, checkAuthMiddleware as checkAuth };
