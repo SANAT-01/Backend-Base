@@ -1,6 +1,6 @@
 # 📝 Base Backend
 
-A Node.js + Express backend for the **Thought Gallery** app.
+A Node.js + Express backend.
 It manages **users, authentication, and user-generated content (posts)** with a PostgreSQL database hosted on **Render**.
 
 ---
@@ -102,43 +102,6 @@ src/
 | DELETE | `/posts/:id` | ✅         | Delete post (owner only)         |
 
 ---
-
-## 🔧 Setup Instructions
-
-1. Clone repository:
-
-   ```bash
-   git clone https://github.com/your-repo/thought-gallery-backend.git
-   cd thought-gallery-backend
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file:
-
-   ```ini
-   KEY=supersecret
-   DB_USER=thoughts_gallery
-   DB_HOST=dpg-xxxx.oregon-postgres.render.com
-   DB_NAME=thoughts_gallery_db
-   DB_PASSWORD=your_password
-   DB_PORT=5432
-   ```
-
-4. Run server:
-
-   ```bash
-   npm start
-   ```
-
-   Server runs at: [http://localhost:3000](http://localhost:3000)
-
----
-
 ## ✅ Example Workflow
 
 1. **Sign up** → `/signup`
